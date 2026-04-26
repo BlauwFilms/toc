@@ -83,33 +83,26 @@ class Toc {
     this._initActiveTracking(headings);
   }
 
-  _initActiveTracking(headings) {
-    if (!("IntersectionObserver" in window)) return;
+_initActiveTracking(headings) {
+  if (!("IntersectionObserver" in window)) return;
 
-    const links = headings.map(({ id }) =>
-      document.querySelector(`.toc-item-${id} a`)
-    );
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const link = document.querySelector(
-            `.toc-item-${entry.target.id} a`
-          );
-          if (link) {
-            if (entry.isIntersecting) {
-              links.forEach((l) => l && l.classList.remove("toc-active"));
-              link.classList.add("toc-active");
-            }
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const item = document.querySelector(`.toc-item-${entry.target.id}`);
+        if (item) {
+          if (entry.isIntersecting) {
+            document.querySelectorAll(".toc-item").forEach((el) => el.classList.remove("toc-item-active"));
+            item.classList.add("toc-item-active");
           }
-        });
-      },
-      { rootMargin: "0px 0px -60% 0px", threshold: 0 }
-    );
+        }
+      });
+    },
+    { rootMargin: "0px 0px -60% 0px", threshold: 0 }
+  );
 
-    headings.forEach(({ id }) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-  }
+  headings.forEach(({ id }) => {
+    const el = document.getElementById(id);
+    if (el) observer.observe(el);
+  });
 }
