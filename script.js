@@ -84,25 +84,25 @@ class Toc {
   }
 
 _initActiveTracking(headings) {
-  if (!("IntersectionObserver" in window)) return;
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        const item = document.querySelector(`.toc-item-${entry.target.id}`);
-        if (item) {
-          if (entry.isIntersecting) {
-            document.querySelectorAll(".toc-item").forEach((el) => el.classList.remove("toc-item-active"));
-            item.classList.add("toc-item-active");
+    if (!("IntersectionObserver" in window)) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const item = document.querySelector(`.toc-item-${entry.target.id}`);
+          if (item) {
+            if (entry.isIntersecting) {
+              document.querySelectorAll(".toc-item").forEach((el) => el.classList.remove("toc-item-active"));
+              item.classList.add("toc-item-active");
+            }
           }
-        }
-      });
-    },
-    { rootMargin: "0px 0px -60% 0px", threshold: 0 }
-  );
+        });
+      },
+      { rootMargin: "0px 0px -60% 0px", threshold: 0 }
+    );
 
-  headings.forEach(({ id }) => {
-    const el = document.getElementById(id);
-    if (el) observer.observe(el);
-  });
+    headings.forEach(({ id }) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+  }
 }
